@@ -6,6 +6,8 @@
 package evidenciajava;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -27,6 +29,61 @@ public class EvidenciaJava {
         ArrayList<Paciente> pacientes = new ArrayList<Paciente>();
         ArrayList<Cita> citas = new ArrayList<Cita>();
         
+        //Leer datos guardados
+        File archivodoc = new File("Doctores.csv");
+        if(archivodoc.isFile()){
+            Scanner lectordoc = new Scanner(archivodoc);
+            lectordoc.useDelimiter(",");
+            while(lectordoc.hasNext()){
+                String[] datosdoc = lectordoc.nextLine().split(",");
+                doctores.add(new Doctor(datosdoc[0], datosdoc[1], datosdoc[2]));
+            }
+            lectordoc.close();
+        }else{
+            System.out.println("No hay un registro de doctores, creando nuevo registro...");
+        }
+        
+        File archivopac = new File("Pacientes.csv");
+        if(archivopac.isFile()){
+            Scanner lectorpac = new Scanner(archivopac);
+            lectorpac.useDelimiter(",");
+            while(lectorpac.hasNext()){
+                String[] datospac = lectorpac.nextLine().split(",");
+                pacientes.add(new Paciente(datospac[0], datospac[1]));
+            }
+            lectorpac.close();
+        }else{
+            System.out.println("No hay un registro de pacientes, creando nuevo registro...");
+        }
+        
+        File archivocita = new File("Citas.csv");
+        if(archivocita.isFile()){
+            Scanner lectorcita = new Scanner(archivocita);
+            lectorcita.useDelimiter(",");
+            while(lectorcita.hasNext()){
+                String[] datoscita = lectorcita.nextLine().split(",");
+                int indexdoc = -1;
+                for (int i = 0; i < doctores.size(); i++) {
+                    if(doctores.get(i).getId().equals(datoscita[3])){
+                        indexdoc = i;
+                    } 
+                }
+                int indexpac = -1;
+                for (int i = 0; i < pacientes.size(); i++) {
+                    if(pacientes.get(i).getId().equals(datoscita[4])){
+                        indexpac = i;
+                    } 
+                }
+                //citas.add(new Cita(datospac[0], datospac[1]));
+                citas.add(new Cita(datoscita[0], datoscita[1], datoscita[2], doctores.get(indexdoc), pacientes.get(indexpac)));
+            }
+            lectorcita.close();
+        }else{
+            System.out.println("No hay un registro de citas, creando nuevo registro...");
+        }
+        
+        
+        //citas.add(new Cita(id, mot, fecha, doctores.get(indexdoc), pacientes.get(indexpac)));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         boolean salir = false;
         boolean volver = false;
@@ -308,6 +365,38 @@ public class EvidenciaJava {
                 
                 case 0:{
                     salir = true;
+                    //Guardar doctores
+                    FileWriter escritordoc = new FileWriter("Doctores.csv");
+                    for (int i = 0; i < doctores.size(); i++) {
+                        String guardardoc = doctores.get(i).getId() + "," + doctores.get(i).getNombre() + "," + doctores.get(i).getEspecialidad() + "\n";
+                        escritordoc.write(guardardoc);
+                        escritordoc.flush();
+                    }
+                    System.out.println("Lista de doctores guardada");
+                    escritordoc.close();
+                    
+                    //Guardar pacientes
+                    FileWriter escritorpac = new FileWriter("Pacientes.csv");
+                    for (int i = 0; i < pacientes.size(); i++) {
+                        String guardarpac = pacientes.get(i).getId() + "," + pacientes.get(i).getNombre() + "\n";
+                        escritorpac.write(guardarpac);
+                        escritorpac.flush();
+                    }
+                    System.out.println("Lista de pacientes guardada");
+                    escritorpac.close();
+                    
+                    //Guardar citas
+                    FileWriter escritorcita = new FileWriter("Citas.csv");
+                    for (int i = 0; i < citas.size(); i++) {
+                        String guardarcita = citas.get(i).getId() + "," + citas.get(i).getMotivo() + "," +
+                                citas.get(i).getFecha() + "," + citas.get(i).getDoctor().getId() + "," + 
+                                citas.get(i).getPaciente().getId() + "\n";
+                        escritorcita.write(guardarcita);
+                        escritorcita.flush();
+                    }
+                    System.out.println("Lista de citas guardada");
+                    escritorcita.close();
+                    
                     break;
                 }
                 
@@ -321,6 +410,7 @@ public class EvidenciaJava {
         
         
     }
+    
     
     public static void continuar(){
         System.out.println("Pulse una tecla para continuar...");
