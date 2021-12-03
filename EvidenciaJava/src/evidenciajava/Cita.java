@@ -67,7 +67,7 @@ public class Cita {
 
     @Override
     public String toString() {
-        return "Cita{" + "ID=" + id + ", Motivo=" + motivo + ", Fecha=" + fecha + ", Doctor=" + doctor.getNombre() + ", Paciente=" + paciente.getNombre() + '}';
+        return "ID: " + id + "\nMotivo: " + motivo + "\nFecha: " + fecha + "\nDoctor: " + doctor.getNombre() + "\nPaciente: " + paciente.getNombre() + "\n";
     }
     
     

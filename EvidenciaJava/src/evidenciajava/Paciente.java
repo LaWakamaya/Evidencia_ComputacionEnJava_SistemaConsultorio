@@ -37,7 +37,7 @@ public class Paciente {
 
     @Override
     public String toString() {
-        return "Paciente{" + "ID=" + id + ", Nombre=" + nombre + '}';
+        return "ID: " + id + "\nNombre: " + nombre + "\n";
     }
     
     
