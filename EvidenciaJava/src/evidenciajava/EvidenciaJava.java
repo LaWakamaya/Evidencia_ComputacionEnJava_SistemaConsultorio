@@ -83,14 +83,12 @@ public class EvidenciaJava {
         }
         
         
-        //citas.add(new Cita(id, mot, fecha, doctores.get(indexdoc), pacientes.get(indexpac)));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         boolean salir = false;
         boolean volver = false;
         int opcion, opcion2;
         
         while(!salir){
-            //leer CSV
             System.out.println("------CITAS CONSULTORIO------\n");
             System.out.println("Elija una opcion:");
             System.out.println("1. Doctores");
