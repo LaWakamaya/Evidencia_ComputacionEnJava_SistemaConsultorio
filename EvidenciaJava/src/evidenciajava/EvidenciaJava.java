@@ -34,7 +34,6 @@ public class EvidenciaJava {
         
         while(!salir){
             //leer CSV
-            volver = false;
             System.out.println("------CITAS CONSULTORIO------\n");
             System.out.println("Elija una opcion:");
             System.out.println("1. Doctores");
@@ -49,6 +48,7 @@ public class EvidenciaJava {
             }
             switch(opcion){
                 case 1:{
+                    volver = false;
                     while(!volver){
                         System.out.println("---DOCTORES---\n");
                         System.out.println("Elija una opcion:");
@@ -107,6 +107,83 @@ public class EvidenciaJava {
                                 }
                                 if(!existe){
                                     System.out.println("No existe un doctor con ese ID");
+                                }
+                                continuar();
+                                break;
+                            }
+                            
+                            case 0:{
+                                volver = true;
+                                break;
+                            }
+                            
+                            default:{
+                                System.out.println("Ingrese una opcion valida, por favor");
+                                continuar();
+                            }
+                        }
+                    }
+                    break;
+                }
+                
+                case 2:{
+                    volver = false;
+                    while(!volver){
+                        System.out.println("---PACIENTES---\n");
+                        System.out.println("Elija una opcion:");
+                        System.out.println("1.Imprimir lista de pacientes");
+                        System.out.println("2. Agregar paciente");
+                        System.out.println("3. Eliminar paciente");
+                        System.out.println("0. Volver");
+                        try{
+                            opcion2 = Integer.parseInt(br.readLine());
+                        }catch(Exception e){
+                            opcion2 = -1;
+                            System.out.println("Opcion no valida ->" + e);
+                        }
+                        switch(opcion2){
+                            case 1:{
+                                for (int i = 0; i < pacientes.size(); i++) {
+                                    System.out.println(pacientes.get(i));
+                                }
+                                continuar();
+                                break;
+                            }
+                            
+                            case 2:{
+                                System.out.println("Ingrese ID del nuevo paciente");
+                                String id = br.readLine();
+                                boolean existe = false;
+                                for (int i = 0; i < pacientes.size(); i++) {
+                                    if(pacientes.get(i).getId().equals(id))
+                                        existe = true;
+                                }
+                                if(existe){
+                                    System.out.println("Ya existe un paciente con ese ID");
+                                }else{
+                                    System.out.println("Ingrese el nombre del nuevo paciente");
+                                    String nom = br.readLine();
+                                    pacientes.add(new Paciente(id, nom));
+                                    System.out.println("Nuevo paciente agregado correctamente");
+                                }
+                                continuar();
+                                break;
+                            }
+                            
+                            case 3:{
+                                System.out.println("Ingrese ID del paciente a eliminar");
+                                String id = br.readLine();
+                                boolean existe = false;
+                                for (int i = 0; i < pacientes.size(); i++) {
+                                    if(pacientes.get(i).getId().equals(id)){
+                                        existe = true;
+                                        pacientes.remove(i);
+                                        System.out.println("Paciente eliminado correctamente");
+                                        break;
+                                    }
+                                }
+                                if(!existe){
+                                    System.out.println("No existe un paciente con ese ID");
                                 }
                                 continuar();
                                 break;
